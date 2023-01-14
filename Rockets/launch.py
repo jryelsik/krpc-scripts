@@ -21,16 +21,16 @@ def launch(conn, vessel, mission_params, flight_stats):
     # Release launch clamps
     time.sleep(mission_params.clamp_release_time)
     vessel.control.activate_next_stage() 
-    print("LIFTOFF of " + vessel.name)
+    print(f"LIFTOFF of {vessel.name}")
     time.sleep(1)
 
     if mission_params.roll:
-        print("true")
+        print("Roll Program Initiated")
         # Roll Program
         utils.roll_program(vessel, mission_params)
 
     if mission_params.gravity_turn:
-        print("Targeting altitude of " + str(mission_params.target_apoapsis/1000) + "km")
+        print(f"Targeting altitude of {str(mission_params.target_apoapsis/1000)}km")
 
         # Ascent Profile
         ascent(vessel, conn, mission_params)
@@ -45,9 +45,9 @@ def ascent(vessel, conn, mission_params):
     #resources.third_stage_LF
 
     # Main Ascent Loop
-    gravity_turn_end = str((mission_params.turn_end_altitude)/1000) + " km"
+    gravity_turn_end = f"{str((mission_params.turn_end_altitude)/1000)}km"
 
-    print("Gravity Turn End Altitude is " + gravity_turn_end)
+    print(f"Gravity Turn End Altitude is {gravity_turn_end}")
 
     # Ascent profile until 90% target altitude
     while telem.apoapsis() < mission_params.target_apoapsis*0.99:
@@ -101,7 +101,7 @@ def ascent(vessel, conn, mission_params):
     vessel.auto_pilot.target_pitch = 0
     vessel.auto_pilot.wait()
     print("Target Pitch Reached")
-    print("Waiting for Target Altitude of " + str((mission_params.target_apoapsis*0.9)/1000) + " km")
+    print(f"Waiting for Target Altitude of {str((mission_params.target_apoapsis*0.9)/1000)}km")
 
     # Wait until vessel is 90% to target apoapsis
     while telem.altitude() < mission_params.target_apoapsis*0.9:

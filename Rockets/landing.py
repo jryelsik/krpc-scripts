@@ -3,7 +3,7 @@ def landing(vessel, conn, mission_params, flight_stats):
     vertical_speed_check(conn, vessel)
 
     print("\nDecent Profile Started")
-    print("Waiting for Parachute Target Altitude of", mission_params.parachute_altitude, "Meters")
+    print(f"Waiting for Parachute Target Altitude of {mission_params.parachute_altitude} Meters")
     vessel.auto_pilot.disengage()
 
     # Wait for target parachute altitude
@@ -20,7 +20,7 @@ def landing(vessel, conn, mission_params, flight_stats):
             flight_stats.touchdown_speed = vessel.flight(vessel.orbit.body.reference_frame).speed    
         pass
             
-    print(vessel.name + ' has Landed\n')
+    print(f"{vessel.name} has Landed\n")
     return vessel
 
 def vertical_speed_check(conn, vessel):

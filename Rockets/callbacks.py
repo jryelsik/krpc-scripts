@@ -1,7 +1,7 @@
 def current_biome(vessel, conn):
     c_biome = conn.add_stream(getattr, vessel, 'biome')
     def check_biome(biome):
-        print("Entering", biome, "biome")
+        print(f"Entering {biome} biome")
         return biome
     c_biome.start()
     c_biome.add_callback(check_biome)
