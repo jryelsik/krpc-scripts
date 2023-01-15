@@ -35,11 +35,7 @@ def main():
                                             clamp_release_time = 0.5)
 
     # Start callbacks
-    cb.current_biome(vessel, conn)
-    cb.max_gforce(vessel, conn, flight_stats)
-    cb.max_apoapsis(vessel, conn, flight_stats)
-    cb.max_altitude(vessel, conn, flight_stats)
-    cb.max_velocity(vessel, conn, flight_stats)
+    cb.start_callbacks(vessel, conn, flight_stats)
 
     # Mission Start
     vessel = launch(conn, vessel, mission_params, flight_stats)

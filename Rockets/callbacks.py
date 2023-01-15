@@ -41,3 +41,10 @@ def max_velocity(vessel, conn, flight_stats):
         return flight_stats.max_vel
     velocity.start()
     velocity.add_callback(check_velocity)
+
+def start_callbacks(vessel, conn, flight_stats):
+    current_biome(vessel, conn)
+    max_gforce(vessel, conn, flight_stats)
+    max_apoapsis(vessel, conn, flight_stats)
+    max_altitude(vessel, conn, flight_stats)
+    max_velocity(vessel, conn, flight_stats)
