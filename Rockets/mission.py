@@ -26,55 +26,50 @@ def main():
                                             turn_angle = None,
                                             turn_start_altitude = None,
                                             turn_end_altitude = None,
-                                            parachute_altitude = 1000,
+                                            parachute_altitude = 380,
                                             side_boosters_seperated = False,
                                             main_booster_seperated = False,
                                             payload_booster_seperated = False,
                                             fairing_jettison = False,
                                             roll = False,
                                             clamp_release_time = 0.5)
-    
-    # TODO: Test the try/except
-    try:
-        # Start callbacks
-        cb.current_biome(vessel, conn)
-        cb.max_gforce(vessel, conn, flight_stats)
-        cb.max_apoapsis(vessel, conn, flight_stats)
-        cb.max_altitude(vessel, conn, flight_stats)
-        cb.max_velocity(vessel, conn, flight_stats)
 
-        # Mission Start
-        vessel = launch(conn, vessel, mission_params, flight_stats)
+    # Start callbacks
+    cb.current_biome(vessel, conn)
+    cb.max_gforce(vessel, conn, flight_stats)
+    cb.max_apoapsis(vessel, conn, flight_stats)
+    cb.max_altitude(vessel, conn, flight_stats)
+    cb.max_velocity(vessel, conn, flight_stats)
 
-        ### Need to unlock tracking station ###
-        # TODO: Create orbit profile
+    # Mission Start
+    vessel = launch(conn, vessel, mission_params, flight_stats)
 
-        if mission_params.landing_flag:
-            # Mission Landing
-            vessel = landing(vessel, conn, mission_params, flight_stats)
+    ### Need to unlock tracking station ###
+    # TODO: Create orbit profile
 
-        # Wait for user input to end mission
-        mission_end_input = str(input("Type 'e' and Press Enter to End Mission\n"))
-        while mission_end_input != "e":
-            pass
+    if mission_params.landing_flag:
+        # Mission Landing
+        vessel = landing(vessel, conn, mission_params, flight_stats)
 
-        # Record mission end times
-        flight_stats.end_time = utils.universal_time(conn)
-        flight_stats.total_mission_time = utils.mission_time(vessel)
+    # Wait for user input to end mission
+    mission_end_input = str(input("Type 'e' and Press Enter to End Mission\n"))
+    while mission_end_input != "e":
+        pass
 
-        # Mission Logs
-        print("\nGenerating Log File...")
-        log.mission_log_create(vessel, mission_params)
-        log.vessel_attributes_log(vessel,mission_params, flight_stats)
-        log.mission_parameters_log(vessel, mission_params)
-        log.contract_log(conn, vessel, mission_params)
-        log.experiments_log(vessel, mission_params)
-        log.mission_time_log(vessel, mission_params, flight_stats)
-        log.flight_stats_log(vessel, mission_params, flight_stats)
-        log.notes(vessel, mission_params)
-        print("Log File Generated")
-    except ValueError:
-        print("test")
+    # Record mission end times
+    flight_stats.end_time = utils.universal_time(conn)
+    flight_stats.total_mission_time = utils.mission_time(vessel)
+
+    # Mission Logs
+    print("\nGenerating Log File...")
+    log.vessel_attributes_log(vessel,mission_params, flight_stats)
+    log.mission_parameters_log(vessel, mission_params)
+    log.contract_log(conn, vessel, mission_params)
+    log.experiments_log(vessel, mission_params)
+    log.mission_time_log(vessel, mission_params, flight_stats)
+    log.flight_stats_log(vessel, mission_params, flight_stats)
+    log.notes(vessel, mission_params)
+    print("Log File Generated")
 
 if __name__ == "__main__":
     main()

@@ -1,4 +1,5 @@
-Mission_Logs/
+Mission*Logs/
+*.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

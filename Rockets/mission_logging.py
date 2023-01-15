@@ -1,22 +1,19 @@
 import os.path
 from launch_utilities import ut_format, met_format
 
-# TODO: Merge log create and append into one method
-# TODO: Convert all strings into f-strings f"sdfsd {variable} sdgsd"
-def mission_log_create(vessel, mission_params):
+def mission_log_write(vessel, mission_params):
     if not os.path.exists("C:/Users/yelsi/Desktop/krpcFiles/KerbX/Mission Logs/" + mission_params.mission_type + " Logs/" + vessel.name + "_Log.txt"):    
         open("C:/Users/yelsi/Desktop/krpcFiles/KerbX/Mission Logs/" + mission_params.mission_type + " Logs/" 
             + vessel.name + "_Log.txt", "w")
 
-def mission_log_append(vessel, mission_params):
-    with open("C:/Users/yelsi/Desktop/krpcFiles/KerbX/Mission Logs/" + mission_params.mission_type + " Logs/" 
-                    + vessel.name + "_Log.txt", "a") as log_file:
-        return log_file
+    log_file = open("C:/Users/yelsi/Desktop/krpcFiles/KerbX/Mission Logs/" + mission_params.mission_type + " Logs/" 
+                    + vessel.name + "_Log.txt", "a")
+    return log_file
 
 def vessel_attributes_log(vessel, mission_params, flight_stats):
-    log_file = mission_log_append(vessel, mission_params)
+    log_file = mission_log_write(vessel, mission_params)
     vessel_type = str(vessel.type)
-    log_file.write("----- Vessel Attributes -----"
+    log_file.write("----- Vessel Attributes -----" 
                     + "\nVessel Name: " + vessel.name
                     + "\nVessel Type: " + vessel_type.partition(".")[2].capitalize()
                     + "\nVessel Mass: " + str(f'{flight_stats.vessel_mass/1000:.03f}') + " t"
@@ -30,9 +27,10 @@ def vessel_attributes_log(vessel, mission_params, flight_stats):
         for x in range(vessel.crew_count):
             log_file.write("\nVessel Crew Member Name: " + str(vessel.crew.name[x])
                             + "\nVessel Crew Type: " + str(vessel.crew.type[x]))
+    log_file.close()
 
 def mission_parameters_log(vessel, mission_params):
-    log_file = mission_log_append(vessel, mission_params)
+    log_file = mission_log_write(vessel, mission_params)
 
     log_file.write("\n\n----- Mission Parameters -----"
                     + "\nMission Type = " + str(mission_params.mission_type))
@@ -57,9 +55,10 @@ def mission_parameters_log(vessel, mission_params):
 
     if mission_params.parachute_altitude != None:
         log_file.write("\nParachute Release Altitude = " + str(mission_params.parachute_altitude))
+    log_file.close()
 
 def contract_log(conn, vessel, mission_params):
-    log_file = mission_log_append(vessel, mission_params)
+    log_file = mission_log_write(vessel, mission_params)
     active_contracts = conn.space_center.contract_manager.active_contracts
 
     log_file.write("\n\n----- Contracts -----")
@@ -75,9 +74,10 @@ def contract_log(conn, vessel, mission_params):
                             + "\nReputation on Completion: " + str(active_contracts[x].parameters[0].reputation_completion)
                             + "\nScience on Completion: " + str(active_contracts[x].parameters[0].science_completion)
                             + "\nContract Completion: " + str(active_contracts[x].parameters[0].completed) + "\n")
+    log_file.close()
 
 def experiments_log(vessel, mission_params):
-    log_file = mission_log_append(vessel, mission_params)    
+    log_file = mission_log_write(vessel, mission_params)    
     total_science = 0
 
     log_file.write("\n\n----- Experiments Deployed on Vessel -----")
@@ -100,6 +100,7 @@ def experiments_log(vessel, mission_params):
                 .experiment.data[0].science_value, 2)
     if total_science != 0:
         log_file.write("\n\nTotal Science Collected: " + str(total_science))
+    log_file.close()
 
 def experiment_name(vessel, x):
     if vessel.parts.experiments[x].part.title == "2HOT Thermometer":
@@ -109,21 +110,24 @@ def experiment_name(vessel, x):
     return experiment
 
 def flight_stats_log(vessel, mission_params, flight_stats):
-    log_file = mission_log_append(vessel, mission_params)
+    log_file = mission_log_write(vessel, mission_params)
     log_file.write("\n\n----- Flight Stats -----"
                     + "\nApoapsis = " + str(f'{max(flight_stats.max_ap):.02f} meters')
                     + "\nMax Altitude = " + str(f'{max(flight_stats.max_alt):.02f} meters')
                     + "\nMax Velocity = " + str(f'{max(flight_stats.max_vel):.02f} m/s')
                     + "\nMax G-force = " + str(f'{max(flight_stats.max_g):.02f} ' + "g's")
                     + "\nTouchdown Velocity = " + str(f'{flight_stats.touchdown_speed:.02f} ' + "m/s"))
+    log_file.close()
                   
 def mission_time_log(vessel, mission_params, flight_stats):
-    log_file = mission_log_append(vessel, mission_params)
+    log_file = mission_log_write(vessel, mission_params)
     log_file.write("\n\n----- Mission Time -----"
                     + "\nMission Start = " + str(ut_format(flight_stats.start_time))
                     + "\nMission End = " + str(ut_format(flight_stats.end_time))
                     + "\nTotal Mission Time = " + str(met_format(flight_stats.total_mission_time, mission_params)))
+    log_file.close()
 
 def notes(vessel, mission_params):
-    log_file = mission_log_append(vessel, mission_params)
+    log_file = mission_log_write(vessel, mission_params)
     log_file.write("\n\nNotes: ")
+    log_file.close()
