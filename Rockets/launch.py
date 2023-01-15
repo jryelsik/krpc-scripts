@@ -22,6 +22,10 @@ def launch(conn, vessel, mission_params, flight_stats):
     time.sleep(mission_params.clamp_release_time)
     vessel.control.activate_next_stage() 
     print(f"LIFTOFF of {vessel.name}")
+
+    # Start Warp
+    conn.space_center.physics_warp_factor = 3
+
     time.sleep(1)
 
     if mission_params.roll:
