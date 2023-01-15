@@ -21,11 +21,6 @@ def landing(vessel, conn, mission_params, flight_stats):
         pass
             
     print(f"{vessel.name} has Landed\n")
-
-    # Disable Warp
-    print("Warp Disabled")
-    conn.space_center.physics_warp_factor = 0
-
     return vessel
 
 def vertical_speed_check(conn, vessel):
