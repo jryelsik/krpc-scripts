@@ -10,35 +10,37 @@ collections.Iterable = collections.abc.Iterable
 def main():
     conn, vessel = utils.initialize()
     flight_stats = mpt.FlightStats(vessel_mass = vessel.mass)
-    mission_params = mpt.MissionParameters(mission_type = "Test Flight", # [Contract, Research, Test Flight]
-                                            gravity_turn = False,
-                                            srb_flag = True,
-                                            landing_flag = True,
+    mission_params = mpt.MissionParameters(mission_type = "Test Flight",
                                             countdown_time = 0,
-                                            first_decouple_stage = 0,
-                                            second_decouple_stage = 0,
-                                            third_decouple_stage = 0,
-                                            srb_stage = 0,
-                                            target_apoapsis = None,
-                                            target_pitch = 90,
-                                            target_heading = 90,
-                                            target_roll = None,
-                                            turn_angle = None,
-                                            turn_start_altitude = None,
-                                            turn_end_altitude = None,
-                                            parachute_altitude = 380,
+                                            clamp_release_time = 0.5,
+                                            roll_flag = False,
+                                            gravity_turn_flag = False,
+                                            landing_flag = True,
                                             side_boosters_seperated = False,
                                             main_booster_seperated = False,
                                             payload_booster_seperated = False,
                                             fairing_jettison = False,
-                                            roll = False,
-                                            clamp_release_time = 0.5)
+                                            target_apoapsis = 80000,
+                                            target_pitch = 90,
+                                            target_heading = 90,
+                                            target_roll = 0,
+                                            turn_angle = 0,
+                                            turn_start_altitude = 250,
+                                            turn_end_altitude = 45000,
+                                            parachute_altitude = 400)
+    
+    vessel_params = mpt.VesselParameters(srb_flag = True,
+                                            fairing_flag = False,
+                                            srb_stage = 0,
+                                            first_decouple_stage = 3,
+                                            second_decouple_stage = 2,
+                                            third_decouple_stage = 1)
 
     # Start callbacks
     cb.start_callbacks(vessel, conn, flight_stats)
 
     # Mission Start
-    vessel = launch(conn, vessel, mission_params, flight_stats)
+    vessel = launch(conn, vessel, mission_params, vessel_params, flight_stats)
 
     ### Need to unlock tracking station ###
     # TODO: Create orbit profile
@@ -57,7 +59,7 @@ def main():
     flight_stats.total_mission_time = utils.mission_time(vessel)
 
     # Generate mission logs
-    log.generate_log_file(conn, vessel, mission_params, flight_stats)
+    log.generate_log_file(conn, vessel, mission_params, vessel_params, flight_stats)
 
 if __name__ == "__main__":
     main()

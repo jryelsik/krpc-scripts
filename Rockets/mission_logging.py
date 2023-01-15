@@ -29,26 +29,26 @@ def vessel_attributes_log(vessel, mission_params, flight_stats):
                             + "\nVessel Crew Type: " + str(vessel.crew.type[x]))
     log_file.close()
 
-def mission_parameters_log(vessel, mission_params):
+def mission_parameters_log(vessel, mission_params, vessel_params):
     log_file = mission_log_write(vessel, mission_params)
 
     log_file.write("\n\n----- Mission Parameters -----"
                     + "\nMission Type = " + str(mission_params.mission_type))
 
-    if mission_params.first_decouple_stage != 0:
-        log_file.write("\nFirst Decouple Stage = " + str(mission_params.first_decouple_stage))
-    if mission_params.second_decouple_stage != 0:
-        log_file.write("\nSecond Decouple Stage = " + str(mission_params.second_decouple_stage))
-    if mission_params.third_decouple_stage != 0:
-        log_file.write("\nThird Decouple Stage = " + str(mission_params.third_decouple_stage))
-    if mission_params.gravity_turn == True:
+    if vessel_params.first_decouple_stage != 0:
+        log_file.write("\nFirst Decouple Stage = " + str(vessel_params.first_decouple_stage))
+    if vessel_params.second_decouple_stage != 0:
+        log_file.write("\nSecond Decouple Stage = " + str(vessel_params.second_decouple_stage))
+    if vessel_params.third_decouple_stage != 0:
+        log_file.write("\nThird Decouple Stage = " + str(vessel_params.third_decouple_stage))
+    if mission_params.gravity_turn_flag == True:
         log_file.write("\nTarget Apoapsis = " + str(mission_params.target_apoapsis)
                         + "\nTarget Roll = " + str(mission_params.target_roll)
                         + "\nTurn Angle = " + str(mission_params.turn_angle)
                         + "\nGravity Turn Start Altitude = " + str(mission_params.turn_start_altitude)
                         + "\nGravity Turn End Altitude = " + str(mission_params.turn_end_altitude))
     else:
-        log_file.write("\nGravity Turn = " + str(mission_params.gravity_turn))
+        log_file.write("\nGravity Turn = " + str(mission_params.gravity_turn_flag))
 
     log_file.write("\nTarget Pitch = " + str(mission_params.target_pitch)
                     + "\nTarget Heading = " + str(mission_params.target_heading))
@@ -132,10 +132,10 @@ def notes(vessel, mission_params):
     log_file.write("\n\nNotes: ")
     log_file.close()
 
-def generate_log_file(conn, vessel, mission_params, flight_stats):
+def generate_log_file(conn, vessel, mission_params, vessel_params, flight_stats):
     print("\nGenerating Log File...")
     vessel_attributes_log(vessel, mission_params, flight_stats)
-    mission_parameters_log(vessel, mission_params)
+    mission_parameters_log(vessel, mission_params, vessel_params)
     contract_log(conn, vessel, mission_params)
     experiments_log(vessel, mission_params)
     mission_time_log(vessel, mission_params, flight_stats)
