@@ -60,16 +60,8 @@ def main():
     flight_stats.end_time = utils.universal_time(conn)
     flight_stats.total_mission_time = utils.mission_time(vessel)
 
-    # Mission Logs
-    print("\nGenerating Log File...")
-    log.vessel_attributes_log(vessel,mission_params, flight_stats)
-    log.mission_parameters_log(vessel, mission_params)
-    log.contract_log(conn, vessel, mission_params)
-    log.experiments_log(vessel, mission_params)
-    log.mission_time_log(vessel, mission_params, flight_stats)
-    log.flight_stats_log(vessel, mission_params, flight_stats)
-    log.notes(vessel, mission_params)
-    print("Log File Generated")
+    # Generate mission logs
+    log.generate_log_file(conn, vessel, mission_params, flight_stats)
 
 if __name__ == "__main__":
     main()
