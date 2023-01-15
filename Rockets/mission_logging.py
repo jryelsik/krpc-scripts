@@ -2,12 +2,12 @@ import os.path
 from launch_utilities import ut_format, met_format
 
 def mission_log_write(vessel, mission_params):
-    if not os.path.exists("C:/Users/yelsi/Desktop/krpcFiles/KerbX/Mission Logs/" + mission_params.mission_type + " Logs/" + vessel.name + "_Log.txt"):    
-        open("C:/Users/yelsi/Desktop/krpcFiles/KerbX/Mission Logs/" + mission_params.mission_type + " Logs/" 
-            + vessel.name + "_Log.txt", "w")
+    file_loc = "C:/Users/yelsi/Desktop/krpcFiles/KerbX/Mission Logs/" + mission_params.mission_type + " Logs/" + vessel.name + "_Log.txt"
 
-    log_file = open("C:/Users/yelsi/Desktop/krpcFiles/KerbX/Mission Logs/" + mission_params.mission_type + " Logs/" 
-                    + vessel.name + "_Log.txt", "a")
+    if not os.path.exists(file_loc):    
+        log_file = open(file_loc, "w")        
+    else:
+        log_file = open(file_loc, "a")
     return log_file
 
 def vessel_attributes_log(vessel, mission_params, flight_stats):
