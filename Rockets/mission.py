@@ -71,9 +71,6 @@ def main():
     log.notes(vessel, mission_params)
     print("Log File Generated")
 
-
-    print("test")
-
 if __name__ == "__main__":
     main()
     print("DONE")
