@@ -57,7 +57,7 @@ def gravity_turn(vessel, telem, mission_params):
 def side_boosters_sep(vessel, side_booster_fuel, side_boosters_seperated):
     # Separate side boosters when finished    
     if side_booster_fuel() < 2:
-        vessel.parts.with_tag('CE1')[0].engine.active = True
+        vessel.parts.with_tag('CE1')[0].engine.active = True # Start main engine before seperating side boosters
         print("Main Engine Start")
         time.sleep(1.5)   
         vessel.control.activate_next_stage() # Seperate side boosters
@@ -66,7 +66,7 @@ def side_boosters_sep(vessel, side_booster_fuel, side_boosters_seperated):
     return side_boosters_seperated
 
 def main_boosters_sep(vessel, main_booster_fuel, main_booster_seperated):
-    # Separate side boosters when finished
+    # Separate main boosters when finished
     if main_booster_fuel() < 0.1:
         print("Main Engine Shutdown")
         vessel.control.throttle = 0
@@ -77,7 +77,7 @@ def main_boosters_sep(vessel, main_booster_fuel, main_booster_seperated):
     return main_booster_seperated
 
 def payload_boosters_sep(vessel, payload_booster_fuel, payload_booster_seperated):
-    # Separate side boosters when finished
+    # Separate payload boosters when finished
     if payload_booster_fuel() < 0.1:
         print("Payload Engine Shutdown")
         vessel.control.throttle = 0

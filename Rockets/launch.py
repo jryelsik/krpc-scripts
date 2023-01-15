@@ -2,7 +2,7 @@ import time
 import launch_utilities as utils
 import mission_params_telem
 
-def launch(conn, vessel, mission_params, flight_stats):
+def launch(conn, vessel, mission_params, vessel_params, flight_stats):
     # Countdown to launch
     utils.countdown_timer(mission_params)
     flight_stats.start_time = utils.universal_time(conn)
@@ -15,7 +15,7 @@ def launch(conn, vessel, mission_params, flight_stats):
     flight_stats.max_thrust = vessel.available_thrust
     flight_stats.isp = vessel.specific_impulse
 
-    if not mission_params.srb_flag:
+    if not vessel_params.srb_flag:
         vessel.control.throttle = utils.throttle_from_twr(vessel, 1.5)
 
     # Release launch clamps
@@ -28,20 +28,20 @@ def launch(conn, vessel, mission_params, flight_stats):
 
     time.sleep(1)
 
-    if mission_params.roll:
+    if mission_params.roll_flag:
         print("Roll Program Initiated")
         # Roll Program
         utils.roll_program(vessel, mission_params)
 
-    if mission_params.gravity_turn:
+    if mission_params.gravity_turn_flag:
         print(f"Targeting altitude of {str(mission_params.target_apoapsis/1000)}km")
 
         # Ascent Profile
-        ascent(vessel, conn, mission_params)
+        ascent(vessel, conn, mission_params, vessel_params)
 
     return vessel
 
-def ascent(vessel, conn, mission_params):
+def ascent(vessel, conn, mission_params, vessel_params):
     telem = mission_params_telem.Telemetry(conn, vessel)
     resources = mission_params_telem.LaunchVehicle(conn, vessel, mission_params)
     #resources.first_stage_LF
@@ -97,7 +97,7 @@ def ascent(vessel, conn, mission_params):
     print("RCS Thrusters Enabled")
     vessel.control.rcs = True
 
-    if not mission_params.fairing_jettison:
+    if vessel_params.fairing_flag and not mission_params.fairing_jettison:
         mission_params.fairing_jettison = utils.fairing_seperation(vessel, mission_params.fairing_jettison)
 
     # Pitch Profile
