@@ -131,14 +131,3 @@ def notes(vessel, mission_params):
     log_file = mission_log_write(vessel, mission_params)
     log_file.write("\n\nNotes: ")
     log_file.close()
-
-def generate_log_file(conn, vessel, mission_params, flight_stats):
-    print("\nGenerating Log File...")
-    vessel_attributes_log(vessel, mission_params, flight_stats)
-    mission_parameters_log(vessel, mission_params)
-    contract_log(conn, vessel, mission_params)
-    experiments_log(vessel, mission_params)
-    mission_time_log(vessel, mission_params, flight_stats)
-    flight_stats_log(vessel, mission_params, flight_stats)
-    notes(vessel, mission_params)
-    print("Log File Generated")
