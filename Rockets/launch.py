@@ -1,6 +1,6 @@
 import time
 import launch_utilities as utils
-from mission_params_telem import Telemetry, LaunchVehicle as lv
+from mission_init import Telemetry, LaunchVehicle as lv
 
 def launch(conn, vessel, mission_params, vessel_params, flight_stats):
     # Countdown to launch
