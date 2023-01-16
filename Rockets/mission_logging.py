@@ -81,8 +81,6 @@ def experiments_log(vessel, mission_params):
     total_science = 0
 
     log_file.write("\n\n----- Experiments Deployed on Vessel -----")
-    if len(vessel.parts.experiments) == 0:
-        log_file.write("\nNo Experiments Deployed on Vessel")
     for i in range(len(vessel.parts.experiments)):
         experiment = experiment_name(vessel, i)
         y = vessel.parts.with_title(experiment)
@@ -100,6 +98,8 @@ def experiments_log(vessel, mission_params):
                 .experiment.data[0].science_value, 2)
     if total_science != 0:
         log_file.write("\n\nTotal Science Collected: " + str(total_science))
+    else:
+        log_file.write("\nNo Experiments Deployed on Vessel")
     log_file.close()
 
 def experiment_name(vessel, x):
