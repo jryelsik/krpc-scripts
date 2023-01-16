@@ -1,43 +1,47 @@
 import collections
-import launch_utilities as utils
-import callbacks as cb
-import mission_params_telem as mpt
-import mission_logging as log
+import yaml
+from launch_utilities import initialize, universal_time, mission_time
+from callbacks import start_callbacks
+from mission_logging import generate_log_file
+from mission_params_telem import MissionParameters as mp, VesselParameters as vp, FlightStats as fs
 from launch import launch
 from landing import landing
 collections.Iterable = collections.abc.Iterable
 
+with open('Rockets/config.yml', 'r') as config_file:
+    config = yaml.safe_load(config_file)
+
 def main():
-    conn, vessel = utils.initialize()
-    flight_stats = mpt.FlightStats(vessel_mass = vessel.mass)
-    mission_params = mpt.MissionParameters(mission_type = "Test Flight",
-                                            countdown_time = 0,
-                                            clamp_release_time = 0.5,
-                                            roll_flag = False,
-                                            gravity_turn_flag = False,
-                                            landing_flag = True,
-                                            side_boosters_seperated = False,
-                                            main_booster_seperated = False,
-                                            payload_booster_seperated = False,
-                                            fairing_jettison = False,
-                                            target_apoapsis = 80000,
-                                            target_pitch = 90,
-                                            target_heading = 90,
-                                            target_roll = 0,
-                                            turn_angle = 0,
-                                            turn_start_altitude = 250,
-                                            turn_end_altitude = 45000,
-                                            parachute_altitude = 400)
+    conn, vessel = initialize()
+    flight_stats = fs(vessel_mass = vessel.mass)
+    mission_params = mp(mission_type = config['MissionParams']['mission_type'],
+                                            countdown_time = config['MissionParams']['countdown_time'],
+                                            clamp_release_time = config['MissionParams']['clamp_release_time'],
+                                            roll_flag = config['MissionParams']['roll_flag'],
+                                            gravity_turn_flag = config['MissionParams']['gravity_turn_flag'],
+                                            landing_flag = config['MissionParams']['landing_flag'],
+                                            side_boosters_seperated = config['MissionParams']['side_boosters_seperated'],
+                                            main_booster_seperated = config['MissionParams']['main_booster_seperated'],
+                                            payload_booster_seperated = config['MissionParams']['payload_booster_seperated'],
+                                            fairing_jettison = config['MissionParams']['fairing_jettison'],
+                                            target_apoapsis = config['MissionParams']['target_apoapsis'],
+                                            target_pitch = config['MissionParams']['target_pitch'],
+                                            target_heading = config['MissionParams']['target_heading'],
+                                            target_roll = config['MissionParams']['target_roll'],
+                                            turn_angle = config['MissionParams']['turn_angle'],
+                                            turn_start_altitude = config['MissionParams']['turn_start_altitude'],
+                                            turn_end_altitude = config['MissionParams']['turn_end_altitude'],
+                                            parachute_altitude = config['MissionParams']['parachute_altitude'])
     
-    vessel_params = mpt.VesselParameters(srb_flag = True,
-                                            fairing_flag = False,
-                                            srb_stage = 0,
-                                            first_decouple_stage = 3,
-                                            second_decouple_stage = 2,
-                                            third_decouple_stage = 1)
+    vessel_params = vp(srb_flag = config['VesselParams']['srb_flag'],
+                                            fairing_flag = config['VesselParams']['fairing_flag'],
+                                            srb_stage = config['VesselParams']['srb_stage'],
+                                            first_decouple_stage = config['VesselParams']['first_decouple_stage'],
+                                            second_decouple_stage = config['VesselParams']['second_decouple_stage'],
+                                            third_decouple_stage = config['VesselParams']['third_decouple_stage'])
 
     # Start callbacks
-    cb.start_callbacks(vessel, conn, flight_stats)
+    start_callbacks(vessel, conn, flight_stats)
 
     # Mission Start
     vessel = launch(conn, vessel, mission_params, vessel_params, flight_stats)
@@ -55,11 +59,11 @@ def main():
         pass
 
     # Record mission end times
-    flight_stats.end_time = utils.universal_time(conn)
-    flight_stats.total_mission_time = utils.mission_time(vessel)
+    flight_stats.end_time = universal_time(conn)
+    flight_stats.total_mission_time = mission_time(vessel)
 
     # Generate mission logs
-    log.generate_log_file(conn, vessel, mission_params, vessel_params, flight_stats)
+    generate_log_file(conn, vessel, mission_params, vessel_params, flight_stats)
 
 if __name__ == "__main__":
     main()

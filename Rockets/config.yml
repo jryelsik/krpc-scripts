@@ -1,0 +1,27 @@
+MissionParams:
+  mission_type: "Test Flight"
+  countdown_time: 5
+  clamp_release_time: 0.5
+  roll_flag: False
+  gravity_turn_flag: False
+  landing_flag: True
+  side_boosters_seperated: False
+  main_booster_seperated: False
+  payload_booster_seperated: False
+  fairing_jettison: False
+  target_apoapsis: 80000
+  target_pitch: 90
+  target_heading: 90
+  target_roll: 0
+  turn_angle: 0
+  turn_start_altitude: 250
+  turn_end_altitude: 45000
+  parachute_altitude: 380
+
+VesselParams:
+  srb_flag: True
+  fairing_flag: False
+  srb_stage: 0
+  first_decouple_stage: 0
+  second_decouple_stage: 0
+  third_decouple_stage: 0

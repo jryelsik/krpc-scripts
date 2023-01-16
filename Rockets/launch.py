@@ -1,6 +1,6 @@
 import time
 import launch_utilities as utils
-import mission_params_telem
+from mission_params_telem import Telemetry, LaunchVehicle as lv
 
 def launch(conn, vessel, mission_params, vessel_params, flight_stats):
     # Countdown to launch
@@ -42,8 +42,8 @@ def launch(conn, vessel, mission_params, vessel_params, flight_stats):
     return vessel
 
 def ascent(vessel, conn, mission_params, vessel_params):
-    telem = mission_params_telem.Telemetry(conn, vessel)
-    resources = mission_params_telem.LaunchVehicle(conn, vessel, mission_params)
+    telem = Telemetry(conn, vessel)
+    resources = lv(conn, vessel, mission_params)
     #resources.first_stage_LF
     #resources.second_stage_LF
     #resources.third_stage_LF
