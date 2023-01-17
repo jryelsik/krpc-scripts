@@ -23,7 +23,8 @@ def setup_MP():
                                                 turn_angle = config['MissionParams']['turn_angle'],
                                                 turn_start_altitude = config['MissionParams']['turn_start_altitude'],
                                                 turn_end_altitude = config['MissionParams']['turn_end_altitude'],
-                                                parachute_altitude = config['MissionParams']['parachute_altitude'])
+                                                parachute_altitude = config['MissionParams']['parachute_altitude'],
+                                                warp_flag = config['MissionParams']['warp_flag'])
     return mission_params
 
 def setup_VP():

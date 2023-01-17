@@ -17,6 +17,7 @@ MissionParams:
   turn_start_altitude: 250
   turn_end_altitude: 45000
   parachute_altitude: 380
+  warp_flag: True
 
 VesselParams:
   srb_flag: True

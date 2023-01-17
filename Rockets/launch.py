@@ -28,8 +28,10 @@ def launch(conn, vessel, mission_params, vessel_params, flight_stats):
     vessel.control.activate_next_stage() 
     print(f"LIFTOFF of {vessel.name}")
 
-    # Start Warp
-    conn.space_center.physics_warp_factor = 3
+    if mission_params.warp_flag:
+        print("\nStarting Warp")
+        # Start Warp
+        conn.space_center.physics_warp_factor = 3
 
     time.sleep(1)
 

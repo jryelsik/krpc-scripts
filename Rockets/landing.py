@@ -22,8 +22,10 @@ def landing(vessel, conn, mission_params, flight_stats):
             
     print(f"{vessel.name} has Landed\n")
 
-    # End Warp
-    conn.space_center.physics_warp_factor = 0
+    if mission_params.warp_flag:
+        print("Ending Warp\n")
+        # End Warp
+        conn.space_center.physics_warp_factor = 0
 
     return vessel
 

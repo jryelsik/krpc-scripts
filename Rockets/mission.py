@@ -1,5 +1,5 @@
 import collections
-from launch_utilities import initialize, universal_time, mission_time#, launch_clamp_weight
+from launch_utilities import initialize, universal_time, mission_time
 from callbacks import start_callbacks
 from mission_logging import generate_log_file
 from launch import launch

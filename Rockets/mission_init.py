@@ -17,7 +17,8 @@ class MissionParameters():
                     turn_angle = 0,
                     turn_start_altitude = 250,
                     turn_end_altitude = 45000,
-                    parachute_altitude = 1200):
+                    parachute_altitude = 1200,
+                    warp_flag = False):
         self.mission_type = mission_type
         self.countdown_time = countdown_time
         self.clamp_release_time = clamp_release_time
@@ -36,6 +37,7 @@ class MissionParameters():
         self.turn_start_altitude = turn_start_altitude
         self.turn_end_altitude = turn_end_altitude
         self.parachute_altitude = parachute_altitude
+        self.warp_flag = warp_flag
         
 class VesselParameters():
     def __init__(self,
