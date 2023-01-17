@@ -1,83 +1,49 @@
-class MissionParameters():
-    def __init__(self,
-                    mission_type = "Test Flight",
-                    countdown_time = 10,
-                    clamp_release_time = 0,
-                    roll_flag = False,
-                    gravity_turn_flag = False,
-                    landing_flag = False,
-                    side_boosters_seperated = False,
-                    main_booster_seperated = False,
-                    payload_booster_seperated = False,
-                    fairing_jettison = False,
-                    target_apoapsis = 80000,
-                    target_pitch = 90,
-                    target_heading = 90,
-                    target_roll = 0,
-                    turn_angle = 0,
-                    turn_start_altitude = 250,
-                    turn_end_altitude = 45000,
-                    parachute_altitude = 1200,
-                    warp_flag = False):
-        self.mission_type = mission_type
-        self.countdown_time = countdown_time
-        self.clamp_release_time = clamp_release_time
-        self.roll_flag = roll_flag
-        self.gravity_turn_flag = gravity_turn_flag
-        self.landing_flag = landing_flag
-        self.side_boosters_seperated = side_boosters_seperated
-        self.main_booster_seperated = main_booster_seperated
-        self.payload_booster_seperated = payload_booster_seperated
-        self.fairing_jettison = fairing_jettison
-        self.target_apoapsis = target_apoapsis
-        self.target_pitch = target_pitch
-        self.target_heading = target_heading
-        self.target_roll = target_roll
-        self.turn_angle = turn_angle
-        self.turn_start_altitude = turn_start_altitude
-        self.turn_end_altitude = turn_end_altitude
-        self.parachute_altitude = parachute_altitude
-        self.warp_flag = warp_flag
-        
-class VesselParameters():
-    def __init__(self,
-                    srb_flag = False,
-                    fairing_flag = False,
-                    srb_stage = 0,
-                    first_decouple_stage = 3,
-                    second_decouple_stage = 2,
-                    third_decouple_stage = 1):
-        self.srb_flag = srb_flag
-        self.fairing_flag = fairing_flag
-        self.srb_stage = srb_stage
-        self.first_decouple_stage = first_decouple_stage
-        self.second_decouple_stage = second_decouple_stage
-        self.third_decouple_stage = third_decouple_stage
+from dataclasses import dataclass, field
 
+@dataclass
+class MissionParameters():
+    mission_type: str
+    countdown_time: int
+    clamp_release_time: int
+    roll_flag: bool
+    gravity_turn_flag: bool
+    landing_flag: bool
+    side_boosters_seperated: bool
+    main_booster_seperated: bool
+    payload_booster_seperated: bool
+    fairing_jettison: bool
+    target_apoapsis: int
+    target_pitch: int
+    target_heading: int
+    target_roll: int
+    turn_angle: int
+    turn_start_altitude: int
+    turn_end_altitude: int
+    parachute_altitude: int
+    warp_flag: bool
+
+@dataclass
+class VesselParameters():
+    srb_flag: bool
+    fairing_flag: bool
+    srb_stage: int
+    first_decouple_stage: int
+    second_decouple_stage: int
+    third_decouple_stage: int
+
+@dataclass
 class FlightStats():
-    def __init__(self,
-                    max_alt = [0],
-                    max_ap = [0],
-                    max_vel = [0],
-                    start_time = 0,
-                    end_time = 0,
-                    total_mission_time = 0,
-                    max_g = [0],
-                    vessel_mass = 0,
-                    max_thrust = 0,
-                    isp = 0,
-                    touchdown_speed = 0):
-        self.max_alt = max_alt
-        self.max_ap = max_ap
-        self.max_vel = max_vel
-        self.start_time = start_time
-        self.end_time = end_time
-        self.total_mission_time = total_mission_time
-        self.max_g = max_g
-        self.vessel_mass = vessel_mass
-        self.max_thrust = max_thrust
-        self.isp = isp
-        self.touchdown_speed = touchdown_speed
+    max_alt: list[int] = field(default_factory=list)
+    max_ap: list[int] = field(default_factory=list)
+    max_vel: list[int] = field(default_factory=list)
+    start_time: int = 0
+    end_time: int = 0
+    total_mission_time: int = 0
+    max_g: list[int] = field(default_factory=list)
+    vessel_mass: int = 0
+    max_thrust: int = 0
+    isp: int = 0
+    touchdown_speed: int = 0
 
 class Telemetry():
     def __init__(self, conn, vessel):

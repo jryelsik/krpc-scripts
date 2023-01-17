@@ -9,7 +9,7 @@ def current_biome(vessel, conn):
 def max_gforce(vessel, conn, flight_stats):
     gforce = conn.add_stream(getattr, vessel.flight(), 'g_force')
     def check_g(g):
-        if max(flight_stats.max_g) < g:
+        if max(flight_stats.max_g, default = 0) < g:
             flight_stats.max_g.append(g)
         return flight_stats.max_g
     gforce.start()
@@ -18,7 +18,7 @@ def max_gforce(vessel, conn, flight_stats):
 def max_apoapsis(vessel, conn, flight_stats):
     apoapsis = conn.add_stream(getattr, vessel.orbit, 'apoapsis_altitude')
     def check_apoapsis(ap):
-        if max(flight_stats.max_ap) < ap:
+        if max(flight_stats.max_ap, default = 0) < ap:
             flight_stats.max_ap.append(ap)
         return flight_stats.max_ap
     apoapsis.start()
@@ -27,7 +27,7 @@ def max_apoapsis(vessel, conn, flight_stats):
 def max_altitude(vessel, conn, flight_stats):
     altitude = conn.add_stream(getattr, vessel.flight(), 'mean_altitude')
     def check_altitude(alt):
-        if max(flight_stats.max_alt) < alt:
+        if max(flight_stats.max_alt, default = 0) < alt:
             flight_stats.max_alt.append(alt)
         return flight_stats.max_alt
     altitude.start()
@@ -36,7 +36,7 @@ def max_altitude(vessel, conn, flight_stats):
 def max_velocity(vessel, conn, flight_stats):
     velocity = conn.add_stream(getattr, vessel.flight(vessel.orbit.body.reference_frame), 'speed')
     def check_velocity(vel):
-        if max(flight_stats.max_vel) < vel:
+        if max(flight_stats.max_vel, default = 0) < vel:
             flight_stats.max_vel.append(vel)
         return flight_stats.max_vel
     velocity.start()
