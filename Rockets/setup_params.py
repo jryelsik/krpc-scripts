@@ -1,7 +1,8 @@
 import yaml
-from mission_init import MissionParameters as mp, VesselParameters as vp
+#from launch_utilities import launch_clamp_weight
+from mission_init import MissionParameters as mp, VesselParameters as vp, FlightStats as fs
 
-with open('Rockets/config.yml', 'r') as config_file:
+with open('Rockets/mission_config.yml', 'r') as config_file:
     config = yaml.safe_load(config_file)
 
 def setup_MP():
@@ -27,10 +28,22 @@ def setup_MP():
 
 def setup_VP():
     vessel_params = vp(srb_flag = config['VesselParams']['srb_flag'],
-                                                fairing_flag = config['VesselParams']['fairing_flag'],
-                                                srb_stage = config['VesselParams']['srb_stage'],
-                                                first_decouple_stage = config['VesselParams']['first_decouple_stage'],
-                                                second_decouple_stage = config['VesselParams']['second_decouple_stage'],
-                                                third_decouple_stage = config['VesselParams']['third_decouple_stage'])
-
+                                            fairing_flag = config['VesselParams']['fairing_flag'],
+                                            srb_stage = config['VesselParams']['srb_stage'],
+                                            first_decouple_stage = config['VesselParams']['first_decouple_stage'],
+                                            second_decouple_stage = config['VesselParams']['second_decouple_stage'],
+                                            third_decouple_stage = config['VesselParams']['third_decouple_stage'])
     return vessel_params
+
+def setup_FS(vessel):
+    def launch_clamp_weight():
+        clamp_weight = 100 #kg
+        total_clamp_weight = 0
+        for i in range(len(vessel.parts.with_title("TT18-A Launch Stability Enhancer"))):
+            total_clamp_weight += clamp_weight
+        return total_clamp_weight
+
+    flight_stats = fs(vessel_mass = vessel.mass + launch_clamp_weight())
+    return flight_stats
+
+   

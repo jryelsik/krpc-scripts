@@ -5,13 +5,18 @@ from mission_init import Telemetry, LaunchVehicle as lv
 def launch(conn, vessel, mission_params, vessel_params, flight_stats):
     # Countdown to launch
     utils.countdown_timer(mission_params)
+
+    # Get mission start time in ut
     flight_stats.start_time = utils.universal_time(conn)
+
     vessel.auto_pilot.engage()
     vessel.auto_pilot.target_pitch_and_heading = 90
 
     # Booster Ignition
     print("\nBOOSTER IGNITION\n")
     vessel.control.activate_next_stage()
+
+    # Get liftoff thrust and isp
     flight_stats.max_thrust = vessel.available_thrust
     flight_stats.isp = vessel.specific_impulse
 

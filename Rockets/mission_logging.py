@@ -17,8 +17,8 @@ def vessel_attributes_log(vessel, mission_params, flight_stats):
                     + "\nVessel Name: " + vessel.name
                     + "\nVessel Type: " + vessel_type.partition(".")[2].capitalize()
                     + "\nVessel Mass: " + str(f'{flight_stats.vessel_mass/1000:.03f}') + " t"
-                    + "\nMax Vessel Thrust: " + str(f'{flight_stats.max_thrust:.02f}') + " kN"
-                    + "\nVessel ISP ASL: " + str(f'{flight_stats.isp:.02f}') + " seconds")
+                    + "\nVessel Liftoff Thrust: " + str(f'{flight_stats.max_thrust:.02f}') + " kN"
+                    + "\nVessel Liftoff ISP ASL: " + str(f'{flight_stats.isp:.02f}') + " seconds")
 
     if vessel.crew_capacity != 0:
         log_file.write("\nVessel Crew Capacity: " + str(vessel.crew_capacity)

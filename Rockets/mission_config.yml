@@ -1,6 +1,6 @@
 MissionParams:
   mission_type: "Test Flight"
-  countdown_time: 5
+  countdown_time: 1
   clamp_release_time: 0.5
   roll_flag: False
   gravity_turn_flag: False

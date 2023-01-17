@@ -1,8 +1,7 @@
 import collections
-from launch_utilities import initialize, universal_time, mission_time
+from launch_utilities import initialize, universal_time, mission_time#, launch_clamp_weight
 from callbacks import start_callbacks
 from mission_logging import generate_log_file
-from mission_init import MissionParameters as mp, VesselParameters as vp, FlightStats as fs
 from launch import launch
 from landing import landing
 import setup_params
@@ -10,7 +9,7 @@ collections.Iterable = collections.abc.Iterable
 
 def main():
     conn, vessel = initialize()
-    flight_stats = fs(vessel_mass = vessel.mass)
+    flight_stats = setup_params.setup_FS(vessel)
     mission_params = setup_params.setup_MP()
     vessel_params = setup_params.setup_VP()
 
