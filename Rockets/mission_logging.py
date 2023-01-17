@@ -1,5 +1,4 @@
 import os.path
-from launch_utilities import ut_format, met_format
 
 def mission_log_write(vessel, mission_params):
     file_loc = "C:/Users/yelsi/Desktop/krpcFiles/KerbX/Mission Logs/" + mission_params.mission_type + " Logs/" + vessel.name + "_Log.txt"
@@ -142,3 +141,22 @@ def generate_log_file(conn, vessel, mission_params, vessel_params, flight_stats)
     flight_stats_log(vessel, mission_params, flight_stats)
     notes(vessel, mission_params)
     print("Log File Generated")
+
+def ut_format(x):
+    seconds = x%60
+    minutes = (x//60)%60
+    hours = (x//3600)%6
+    days = (x//21600)%426.08
+    years = (x//9203328)
+
+    return (f'Y{years+1:.0f}:D{days+1:.0f}:{hours:.0f}h:{minutes:.0f}m:{seconds:.0f}s UT')
+
+def met_format(x, mission_params):
+    x += mission_params.clamp_release_time
+    seconds = x%60
+    minutes = (x//60)%60
+    hours = (x//3600)%6
+    days = (x//21600)%426.08
+    years = (x//9203328)
+
+    return (f'T + {years:.0f}y:{days:.0f}d:{hours:.0f}h:{minutes:.0f}m:{seconds:.01f}s MET')

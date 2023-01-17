@@ -22,6 +22,7 @@ def landing(vessel, conn, mission_params, flight_stats):
             
     print(f"{vessel.name} has Landed\n")
 
+    # End warp is warping is enabled
     if mission_params.warp_flag:
         print("Ending Warp\n")
         # End Warp

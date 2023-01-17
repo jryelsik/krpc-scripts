@@ -20,6 +20,7 @@ def launch(conn, vessel, mission_params, vessel_params, flight_stats):
     flight_stats.max_thrust = vessel.available_thrust
     flight_stats.isp = vessel.specific_impulse
 
+    # Check if vessel is using SRB's
     if not vessel_params.srb_flag:
         vessel.control.throttle = utils.throttle_from_twr(vessel, 1.5)
 
@@ -28,6 +29,7 @@ def launch(conn, vessel, mission_params, vessel_params, flight_stats):
     vessel.control.activate_next_stage() 
     print(f"LIFTOFF of {vessel.name}")
 
+    # Check if warp flag is true
     if mission_params.warp_flag:
         print("\nStarting Warp")
         # Start Warp
@@ -35,11 +37,13 @@ def launch(conn, vessel, mission_params, vessel_params, flight_stats):
 
     time.sleep(1)
 
+    # Check whether vessel needs to roll
     if mission_params.roll_flag:
         print("Roll Program Initiated")
         # Roll Program
         utils.roll_program(vessel, mission_params)
 
+    # Check if vessel is performing a gravity turn
     if mission_params.gravity_turn_flag:
         print(f"Targeting altitude of {str(mission_params.target_apoapsis/1000)}km")
 

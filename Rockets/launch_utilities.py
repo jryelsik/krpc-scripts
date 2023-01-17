@@ -36,7 +36,6 @@ def twr_altitude_control(vessel, telem):
             vessel.control.throttle = throttle_from_twr(vessel, 1.7)
 
 def roll_program(vessel, mission_params):
-    # Roll Program
     print("\nRoll Program Initiated")
     vessel.auto_pilot.target_heading = mission_params.target_heading
     vessel.auto_pilot.wait()
@@ -106,22 +105,3 @@ def universal_time(conn):
 
 def mission_time(vessel):
     return round(vessel.met, 2)
-
-def ut_format(x):
-    seconds = x%60
-    minutes = (x//60)%60
-    hours = (x//3600)%6
-    days = (x//21600)%426.08
-    years = (x//9203328)
-
-    return (f'Y{years+1:.0f}:D{days+1:.0f}:{hours:.0f}h:{minutes:.0f}m:{seconds:.0f}s UT')
-
-def met_format(x, mission_params):
-    x += mission_params.clamp_release_time
-    seconds = x%60
-    minutes = (x//60)%60
-    hours = (x//3600)%6
-    days = (x//21600)%426.08
-    years = (x//9203328)
-
-    return (f'T + {years:.0f}y:{days:.0f}d:{hours:.0f}h:{minutes:.0f}m:{seconds:.01f}s MET')
