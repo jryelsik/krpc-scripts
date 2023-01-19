@@ -1,5 +1,7 @@
 import os.path
 
+# TODO: Convert strings to f-strings
+
 def mission_log_write(vessel, mission_params):
     file_loc = "C:/Users/yelsi/Desktop/krpcFiles/KerbX/Mission Logs/" + mission_params.mission_type + " Logs/" + vessel.name + "_Log.txt"
 
@@ -11,14 +13,16 @@ def mission_log_write(vessel, mission_params):
 
 def vessel_attributes_log(vessel, mission_params, flight_stats):
     log_file = mission_log_write(vessel, mission_params)
-    vessel_type = str(vessel.type)
+    vessel_type = str(vessel.type) # TODO: Move vessel type to mission init - vessel stats class
     log_file.write("----- Vessel Attributes -----" 
-                    + "\nVessel Name: " + vessel.name
+                    + "\nVessel Name: " + vessel.name # TODO: Move vessel name to mission init - vessel stats class
                     + "\nVessel Type: " + vessel_type.partition(".")[2].capitalize()
                     + "\nVessel Mass: " + str(f'{flight_stats.vessel_mass/1000:.03f}') + " t"
-                    + "\nVessel Liftoff Thrust: " + str(f'{flight_stats.max_thrust:.02f}') + " kN"
-                    + "\nVessel Liftoff ISP ASL: " + str(f'{flight_stats.isp:.02f}') + " seconds")
+                    + "\nVessel Liftoff Thrust: " + str(f'{flight_stats.max_thrust:.02f}') + " kN" # TODO: Move vessel thrust to mission init - vessel stats class
+                    + "\nVessel Liftoff ISP ASL: " + str(f'{flight_stats.isp:.02f}') + " seconds") # TODO: Move vessel isp to mission init - vessel stats class
 
+
+    # TODO: Create crew class in mission_init
     if vessel.crew_capacity != 0:
         log_file.write("\nVessel Crew Capacity: " + str(vessel.crew_capacity)
                         + "\nVessel Crew Count: " + str(vessel.crew_count))
@@ -56,6 +60,8 @@ def mission_parameters_log(vessel, mission_params, vessel_params):
         log_file.write("\nParachute Release Altitude = " + str(mission_params.parachute_altitude))
     log_file.close()
 
+
+# TODO: Create contract class in mission_init
 def contract_log(conn, vessel, mission_params):
     log_file = mission_log_write(vessel, mission_params)
     active_contracts = conn.space_center.contract_manager.active_contracts

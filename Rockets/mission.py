@@ -4,14 +4,14 @@ from callbacks import start_callbacks
 from mission_logging import generate_log_file
 from launch import launch
 from landing import landing
-import setup_params
+from mission_init import MissionParameters, VesselParameters, FlightStats
 collections.Iterable = collections.abc.Iterable
 
 def main():
     conn, vessel = initialize()
-    flight_stats = setup_params.setup_FS(vessel)
-    mission_params = setup_params.setup_MP()
-    vessel_params = setup_params.setup_VP()
+    flight_stats = FlightStats(vessel_mass = FlightStats.total_vessel_mass(vessel))
+    mission_params = MissionParameters
+    vessel_params = VesselParameters
 
     # Start callbacks
     start_callbacks(vessel, conn, flight_stats)

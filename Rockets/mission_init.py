@@ -1,49 +1,67 @@
 from dataclasses import dataclass, field
+import yaml
+
+with open('Rockets/mission_config.yml', 'r') as config_file:
+    config = yaml.safe_load(config_file)
 
 @dataclass
 class MissionParameters():
-    mission_type: str
-    countdown_time: int
-    clamp_release_time: int
-    roll_flag: bool
-    gravity_turn_flag: bool
-    landing_flag: bool
-    side_boosters_seperated: bool
-    main_booster_seperated: bool
-    payload_booster_seperated: bool
-    fairing_jettison: bool
-    target_apoapsis: int
-    target_pitch: int
-    target_heading: int
-    target_roll: int
-    turn_angle: int
-    turn_start_altitude: int
-    turn_end_altitude: int
-    parachute_altitude: int
-    warp_flag: bool
+    mission_type: str = config['MissionParams']['mission_type']
+    countdown_time: int = config['MissionParams']['countdown_time']
+    clamp_release_time: int = config['MissionParams']['clamp_release_time']
+    roll_flag: bool = config['MissionParams']['roll_flag']
+    gravity_turn_flag: bool = config['MissionParams']['gravity_turn_flag']
+    landing_flag: bool = config['MissionParams']['landing_flag']
+    side_boosters_seperated: bool = config['MissionParams']['side_boosters_seperated']
+    main_booster_seperated: bool = config['MissionParams']['main_booster_seperated']
+    payload_booster_seperated: bool = config['MissionParams']['payload_booster_seperated']
+    fairing_jettison: bool = config['MissionParams']['fairing_jettison']
+    target_apoapsis: int = config['MissionParams']['target_apoapsis']
+    target_pitch: int = config['MissionParams']['target_pitch']
+    target_heading: int = config['MissionParams']['target_heading']
+    target_roll: int = config['MissionParams']['target_roll']
+    turn_angle: int = config['MissionParams']['turn_angle']
+    turn_start_altitude: int = config['MissionParams']['turn_start_altitude']
+    turn_end_altitude: int = config['MissionParams']['turn_end_altitude']
+    parachute_altitude: int = config['MissionParams']['parachute_altitude']
+    warp_flag: bool = config['MissionParams']['warp_flag']
 
 @dataclass
 class VesselParameters():
-    srb_flag: bool
-    fairing_flag: bool
-    srb_stage: int
-    first_decouple_stage: int
-    second_decouple_stage: int
-    third_decouple_stage: int
+    srb_flag: bool = config['VesselParams']['srb_flag']
+    fairing_flag: bool = config['VesselParams']['fairing_flag']
+    srb_stage: int = config['VesselParams']['srb_stage']
+    first_decouple_stage: int = config['VesselParams']['first_decouple_stage']
+    second_decouple_stage: int = config['VesselParams']['second_decouple_stage']
+    third_decouple_stage: int = config['VesselParams']['third_decouple_stage']
+
+# TODO: Create vessel stats class for vessel mass, isp, thrust, type, name
 
 @dataclass
 class FlightStats():
+    vessel_mass: int = 0
     max_alt: list[int] = field(default_factory=list)
     max_ap: list[int] = field(default_factory=list)
     max_vel: list[int] = field(default_factory=list)
     start_time: int = 0
     end_time: int = 0
     total_mission_time: int = 0
-    max_g: list[int] = field(default_factory=list)
-    vessel_mass: int = 0
+    max_g: list[int] = field(default_factory=list)    
     max_thrust: int = 0
     isp: int = 0
-    touchdown_speed: int = 0
+    touchdown_speed: int = 0 
+
+    # Determines the number of launch clamps attached to the vessel 
+    # and returns the total weight of all launch clamps
+    def launch_clamp_weight(vessel):
+        clamp_weight = 100 #kg or 0.1t
+        total_clamp_weight = 0
+        for i in range(len(vessel.parts.with_title("TT18-A Launch Stability Enhancer"))):
+            total_clamp_weight += clamp_weight
+        return total_clamp_weight
+
+    def total_vessel_mass(vessel):
+        return vessel.mass + FlightStats.launch_clamp_weight(vessel)
 
 class Telemetry():
     def __init__(self, conn, vessel):
