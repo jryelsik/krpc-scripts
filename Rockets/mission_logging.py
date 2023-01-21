@@ -3,7 +3,7 @@ import os.path
 # TODO: Convert strings to f-strings
 
 def mission_log_write(vessel, mission_params):
-    file_loc = "C:/Users/yelsi/Desktop/krpcFiles/KerbX/Mission Logs/" + mission_params.mission_type + " Logs/" + vessel.name + "_Log.txt"
+    file_loc = "C:/Users/yelsi/Desktop/Programming/krpcFiles/KerbX/Mission Logs/" + mission_params.mission_type + " Logs/" + vessel.name + "_Log.txt"
 
     if not os.path.exists(file_loc):    
         log_file = open(file_loc, "w")        
