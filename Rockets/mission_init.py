@@ -35,21 +35,13 @@ class VesselParameters():
     second_decouple_stage: int = config['VesselParams']['second_decouple_stage']
     third_decouple_stage: int = config['VesselParams']['third_decouple_stage']
 
-# TODO: Create vessel stats class for vessel mass, isp, thrust, type, name
-
 @dataclass
-class FlightStats():
+class VesselStats():
+    vessel_name: str
+    vessel_type: str
     vessel_mass: int = 0
-    max_alt: list[int] = field(default_factory=list)
-    max_ap: list[int] = field(default_factory=list)
-    max_vel: list[int] = field(default_factory=list)
-    start_time: int = 0
-    end_time: int = 0
-    total_mission_time: int = 0
-    max_g: list[int] = field(default_factory=list)    
-    max_thrust: int = 0
-    isp: int = 0
-    touchdown_speed: int = 0 
+    vessel_liftoff_thrust: int = 0
+    vessel_liftoff_isp: int = 0
 
     # Determines the number of launch clamps attached to the vessel 
     # and returns the total weight of all launch clamps
@@ -61,7 +53,18 @@ class FlightStats():
         return total_clamp_weight
 
     def total_vessel_mass(vessel):
-        return vessel.mass + FlightStats.launch_clamp_weight(vessel)
+        return vessel.mass + VesselStats.launch_clamp_weight(vessel) # in kg
+
+@dataclass
+class FlightStats():
+    max_alt: list[int] = field(default_factory=list)
+    max_ap: list[int] = field(default_factory=list)
+    max_vel: list[int] = field(default_factory=list)
+    max_g: list[int] = field(default_factory=list)   
+    start_time: int = 0
+    end_time: int = 0
+    total_mission_time: int = 0 
+    touchdown_speed: int = 0
 
 class Telemetry():
     def __init__(self, conn, vessel):

@@ -9,15 +9,15 @@ def mission_log_write(vessel, mission_params):
         log_file = open(file_loc, "a")
     return log_file
 
-def vessel_attributes_log(vessel, mission_params, flight_stats):
+def vessel_attributes_log(vessel, mission_params, vessel_stats):
     log_file = mission_log_write(vessel, mission_params)
-    vessel_type = str(vessel.type) # TODO: Move vessel type to mission init - vessel stats class
+    vessel_type = str(vessel.type)
     log_file.write(f"----- Vessel Attributes -----"
-                    f"\nVessel Name: {vessel.name}" # TODO: Move vessel name to mission init - vessel stats class
-                    f"\nVessel Type: {vessel_type.partition('.')[2].capitalize()}"
-                    f"\nVessel Mass: {str(f'{flight_stats.vessel_mass/1000:.03f}')} t"
-                    f"\nVessel Liftoff Thrust: {str(f'{flight_stats.max_thrust:.02f}')} kN" # TODO: Move vessel thrust to mission init - vessel stats class
-                    f"\nVessel Liftoff ISP ASL: {str(f'{flight_stats.isp:.02f}')} seconds") # TODO: Move vessel isp to mission init - vessel stats class
+                    f"\nVessel Name: {vessel_stats.vessel_name}"
+                    f"\nVessel Type: {str(vessel_stats.vessel_type.partition('.')[2].capitalize())}"
+                    f"\nVessel Mass: {str(f'{vessel_stats.vessel_mass/1000:.03f}')} t"
+                    f"\nVessel Liftoff Thrust: {str(f'{vessel_stats.vessel_liftoff_thrust:.02f}')} kN"
+                    f"\nVessel Liftoff ISP ASL: {str(f'{vessel_stats.vessel_liftoff_isp:.02f}')} seconds")
 
     # TODO: Create crew class in mission_init
     if vessel.crew_capacity != 0:
@@ -130,9 +130,9 @@ def notes(vessel, mission_params):
     log_file.write("\n\nNotes: ")
     log_file.close()
 
-def generate_log_file(conn, vessel, mission_params, vessel_params, flight_stats):
+def generate_log_file(conn, vessel, mission_params, vessel_params, vessel_stats, flight_stats):
     print("\nGenerating Log File...")
-    vessel_attributes_log(vessel, mission_params, flight_stats)
+    vessel_attributes_log(vessel, mission_params, vessel_stats)
     mission_parameters_log(vessel, mission_params, vessel_params)
     contract_log(conn, vessel, mission_params)
     experiments_log(vessel, mission_params)

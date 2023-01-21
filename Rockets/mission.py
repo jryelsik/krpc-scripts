@@ -4,12 +4,15 @@ from callbacks import start_callbacks
 from mission_logging import generate_log_file
 from launch import launch
 from landing import landing
-from mission_init import MissionParameters, VesselParameters, FlightStats
+from mission_init import MissionParameters, VesselParameters, VesselStats, FlightStats
 collections.Iterable = collections.abc.Iterable
 
 def main():
     conn, vessel = initialize()
-    flight_stats = FlightStats(vessel_mass = FlightStats.total_vessel_mass(vessel))
+    vessel_stats = VesselStats(vessel_mass = VesselStats.total_vessel_mass(vessel),
+                                vessel_name = vessel.name,
+                                vessel_type = str(vessel.type))
+    flight_stats = FlightStats()
     mission_params = MissionParameters
     vessel_params = VesselParameters
 
@@ -17,7 +20,7 @@ def main():
     start_callbacks(vessel, conn, flight_stats)
 
     # Mission Start
-    vessel = launch(conn, vessel, mission_params, vessel_params, flight_stats)
+    vessel = launch(conn, vessel, mission_params, vessel_params, vessel_stats, flight_stats)
 
     ### Need to unlock tracking station ###
     # TODO: Create orbit profile
@@ -36,7 +39,7 @@ def main():
     flight_stats.total_mission_time = mission_time(vessel)
 
     # Generate mission logs
-    generate_log_file(conn, vessel, mission_params, vessel_params, flight_stats)
+    generate_log_file(conn, vessel, mission_params, vessel_params, vessel_stats, flight_stats)
 
 if __name__ == "__main__":
     main()

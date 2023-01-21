@@ -2,7 +2,7 @@ import time
 import launch_utilities as utils
 from mission_init import Telemetry, LaunchVehicle as lv
 
-def launch(conn, vessel, mission_params, vessel_params, flight_stats):
+def launch(conn, vessel, mission_params, vessel_params, vessel_stats, flight_stats):
     # Countdown to launch
     utils.countdown_timer(mission_params)
 
@@ -17,8 +17,8 @@ def launch(conn, vessel, mission_params, vessel_params, flight_stats):
     vessel.control.activate_next_stage()
 
     # Get liftoff thrust and isp
-    flight_stats.max_thrust = vessel.available_thrust # TODO: Create vessel thrust object in mission init - vessel stats class
-    flight_stats.isp = vessel.specific_impulse # TODO: Create vessel isp object in mission init - vessel stats class
+    vessel_stats.vessel_liftoff_thrust = vessel.available_thrust
+    vessel_stats.vessel_liftoff_isp = vessel.specific_impulse
 
     # Check if vessel is using SRB's
     if not vessel_params.srb_flag:
