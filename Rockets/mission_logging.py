@@ -11,7 +11,6 @@ def mission_log_write(vessel, mission_params):
 
 def vessel_attributes_log(vessel, mission_params, vessel_stats):
     log_file = mission_log_write(vessel, mission_params)
-    vessel_type = str(vessel.type)
     log_file.write(f"----- Vessel Attributes -----"
                     f"\nVessel Name: {vessel_stats.vessel_name}"
                     f"\nVessel Type: {str(vessel_stats.vessel_type.partition('.')[2].capitalize())}"
@@ -57,7 +56,6 @@ def mission_parameters_log(vessel, mission_params, vessel_params):
         log_file.write(f"\nParachute Release Altitude = {str(mission_params.parachute_altitude)}")
     log_file.close()
 
-# TODO: Create contract class in mission_init
 def contract_log(conn, vessel, mission_params):
     log_file = mission_log_write(vessel, mission_params)
     active_contracts = conn.space_center.contract_manager.active_contracts

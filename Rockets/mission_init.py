@@ -5,7 +5,7 @@ with open('Rockets/mission_config.yml', 'r') as config_file:
     config = yaml.safe_load(config_file)
 
 @dataclass
-class MissionParameters():
+class MissionParameters:
     mission_type: str = config['MissionParams']['mission_type']
     countdown_time: int = config['MissionParams']['countdown_time']
     clamp_release_time: int = config['MissionParams']['clamp_release_time']
@@ -27,7 +27,7 @@ class MissionParameters():
     warp_flag: bool = config['MissionParams']['warp_flag']
 
 @dataclass
-class VesselParameters():
+class VesselParameters:
     srb_flag: bool = config['VesselParams']['srb_flag']
     fairing_flag: bool = config['VesselParams']['fairing_flag']
     srb_stage: int = config['VesselParams']['srb_stage']
@@ -36,27 +36,15 @@ class VesselParameters():
     third_decouple_stage: int = config['VesselParams']['third_decouple_stage']
 
 @dataclass
-class VesselStats():
+class VesselStats:
     vessel_name: str
     vessel_type: str
     vessel_mass: int = 0
     vessel_liftoff_thrust: int = 0
     vessel_liftoff_isp: int = 0
 
-    # Determines the number of launch clamps attached to the vessel 
-    # and returns the total weight of all launch clamps
-    def launch_clamp_weight(vessel):
-        clamp_weight = 100 #kg or 0.1t
-        total_clamp_weight = 0
-        for i in range(len(vessel.parts.with_title("TT18-A Launch Stability Enhancer"))):
-            total_clamp_weight += clamp_weight
-        return total_clamp_weight
-
-    def total_vessel_mass(vessel):
-        return vessel.mass + VesselStats.launch_clamp_weight(vessel) # in kg
-
 @dataclass
-class FlightStats():
+class FlightStats:
     max_alt: list[int] = field(default_factory=list)
     max_ap: list[int] = field(default_factory=list)
     max_vel: list[int] = field(default_factory=list)
@@ -66,7 +54,7 @@ class FlightStats():
     total_mission_time: int = 0 
     touchdown_speed: int = 0
 
-class Telemetry():
+class Telemetry:
     def __init__(self, conn, vessel):
         self.surface_altitude = conn.add_stream(getattr, vessel.flight(vessel.orbit.body.reference_frame), 'surface_altitude')
         self.altitude = conn.add_stream(getattr, vessel.flight(vessel.orbit.body.reference_frame), 'mean_altitude')
@@ -75,7 +63,7 @@ class Telemetry():
         self.vertical_vel = conn.add_stream(getattr, vessel.flight(vessel.orbit.body.reference_frame), 'vertical_speed')
         self.periapsis = conn.add_stream(getattr, vessel.orbit, 'periapsis_altitude')
 
-class LaunchVehicle():
+class LaunchVehicle:
     def __init__(self, conn, vessel, vessel_params):
         self.first_stage_LF = conn.add_stream(vessel.resources_in_decouple_stage(stage=vessel_params.first_decouple_stage, 
                                                 cumulative=False).amount, 

@@ -1,5 +1,5 @@
 import collections
-from launch_utilities import initialize, universal_time, mission_time
+from launch_utilities import initialize, universal_time, mission_time, launch_clamp_weight
 from callbacks import start_callbacks
 from mission_logging import generate_log_file
 from launch import launch
@@ -9,12 +9,12 @@ collections.Iterable = collections.abc.Iterable
 
 def main():
     conn, vessel = initialize()
-    vessel_stats = VesselStats(vessel_mass = VesselStats.total_vessel_mass(vessel),
+    vessel_stats = VesselStats(vessel_mass = vessel.mass + launch_clamp_weight(vessel),
                                 vessel_name = vessel.name,
                                 vessel_type = str(vessel.type))
     flight_stats = FlightStats()
-    mission_params = MissionParameters
-    vessel_params = VesselParameters
+    mission_params = MissionParameters()
+    vessel_params = VesselParameters()
 
     # Start callbacks
     start_callbacks(vessel, conn, flight_stats)

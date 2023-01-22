@@ -105,3 +105,12 @@ def universal_time(conn):
 
 def mission_time(vessel):
     return round(vessel.met, 2)
+
+# Determines the number of launch clamps attached to the vessel 
+# and returns the total weight of all launch clamps
+def launch_clamp_weight(vessel):
+    clamp_weight = 100 #kg or 0.1t
+    total_clamp_weight = 0
+    for i in range(len(vessel.parts.with_title("TT18-A Launch Stability Enhancer"))):
+        total_clamp_weight += clamp_weight
+    return total_clamp_weight
