@@ -9,7 +9,7 @@ def mission_log_write(vessel, mission_params):
         log_file = open(file_loc, "a")
     return log_file
 
-def vessel_attributes_log(vessel, mission_params, vessel_stats):
+def vessel_attributes_log(vessel, mission_params, vessel_stats, crew_stats, vessel_params):
     log_file = mission_log_write(vessel, mission_params)
     log_file.write(f"----- Vessel Attributes -----"
                     f"\nVessel Name: {vessel_stats.vessel_name}"
@@ -18,14 +18,16 @@ def vessel_attributes_log(vessel, mission_params, vessel_stats):
                     f"\nVessel Liftoff Thrust: {str(f'{vessel_stats.vessel_liftoff_thrust:.02f}')} kN"
                     f"\nVessel Liftoff ISP ASL: {str(f'{vessel_stats.vessel_liftoff_isp:.02f}')} seconds")
 
-    # TODO: Create crew class in mission_init
-    if vessel.crew_capacity != 0:
-        log_file.write(f"\nVessel Crew Capacity: {str(vessel.crew_capacity)}"
-                        f"\nVessel Crew Count: {str(vessel.crew_count)}")
+    log_file.write("\n\n--- Crew ---")
+    if vessel_params.crewed_flag:
+        log_file.write(f"\nVessel Crew Capacity: {str(crew_stats.crew_capacity)}"
+                        f"\nVessel Crew Count: {str(crew_stats.crew_count)}")
         # TODO: Test crew names and type
-        for x in range(vessel.crew_count):
-            log_file.write(f"\nVessel Crew Member Name: {str(vessel.crew.name[x])}"
-                            f"\nVessel Crew Type: {str(vessel.crew.type[x])}")
+        for i in range(crew_stats.crew_count):
+            log_file.write(f"\nVessel Crew Member Name: {str(crew_stats.crew.name[i])}"
+                            f"\nVessel Crew Type: {str(crew_stats.crew.type[i])}")
+    else:
+        log_file.write("\nVessel is Uncrewed")
     log_file.close()
 
 def mission_parameters_log(vessel, mission_params, vessel_params):
@@ -127,9 +129,9 @@ def notes(vessel, mission_params):
     log_file.write("\n\nNotes: ")
     log_file.close()
 
-def generate_log_file(conn, vessel, mission_params, vessel_params, vessel_stats, flight_stats):
+def generate_log_file(conn, vessel, mission_params, vessel_params, vessel_stats, flight_stats, crew_stats):
     print("\nGenerating Log File...")
-    vessel_attributes_log(vessel, mission_params, vessel_stats)
+    vessel_attributes_log(vessel, mission_params, vessel_stats, crew_stats, vessel_params)
     mission_parameters_log(vessel, mission_params, vessel_params)
     contract_log(conn, vessel, mission_params)
     experiments_log(vessel, mission_params)

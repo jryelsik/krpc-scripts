@@ -20,6 +20,7 @@ MissionParams:
   warp_flag: True
 
 VesselParams:
+  crewed_flag: False
   srb_flag: True
   fairing_flag: False
   srb_stage: 0

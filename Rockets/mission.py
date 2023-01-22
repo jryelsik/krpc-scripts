@@ -1,10 +1,10 @@
 import collections
-from launch_utilities import initialize, universal_time, mission_time, launch_clamp_weight
+from launch_utilities import initialize, universal_time, mission_time, launch_clamp_weight, get_crew_names, get_crew_type
 from callbacks import start_callbacks
 from mission_logging import generate_log_file
 from launch import launch
 from landing import landing
-from mission_init import MissionParameters, VesselParameters, VesselStats, FlightStats
+from mission_init import MissionParameters, VesselParameters, VesselStats, FlightStats, Crew
 collections.Iterable = collections.abc.Iterable
 
 def main():
@@ -15,6 +15,14 @@ def main():
     flight_stats = FlightStats()
     mission_params = MissionParameters()
     vessel_params = VesselParameters()
+
+    if vessel_params.crewed_flag:
+        crew_stats = Crew(crew_name = get_crew_names(vessel),
+                            crew_type = get_crew_type(vessel),
+                            crew_capacity = vessel.crew_capacity,
+                            crew_count = vessel.crew_count)
+    else:
+        crew_stats = None
 
     # Start callbacks
     start_callbacks(vessel, conn, flight_stats)
@@ -39,7 +47,7 @@ def main():
     flight_stats.total_mission_time = mission_time(vessel)
 
     # Generate mission logs
-    generate_log_file(conn, vessel, mission_params, vessel_params, vessel_stats, flight_stats)
+    generate_log_file(conn, vessel, mission_params, vessel_params, vessel_stats, flight_stats, crew_stats)
 
 if __name__ == "__main__":
     main()

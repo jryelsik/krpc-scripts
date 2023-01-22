@@ -28,6 +28,7 @@ class MissionParameters:
 
 @dataclass
 class VesselParameters:
+    crewed_flag: bool = config['VesselParams']['crewed_flag']
     srb_flag: bool = config['VesselParams']['srb_flag']
     fairing_flag: bool = config['VesselParams']['fairing_flag']
     srb_stage: int = config['VesselParams']['srb_stage']
@@ -53,6 +54,13 @@ class FlightStats:
     end_time: int = 0
     total_mission_time: int = 0 
     touchdown_speed: int = 0
+
+@dataclass
+class Crew:
+    crew_name: str
+    crew_type: str
+    crew_capacity: int = 0
+    crew_count: int = 0
 
 class Telemetry:
     def __init__(self, conn, vessel):

@@ -114,3 +114,13 @@ def launch_clamp_weight(vessel):
     for i in range(len(vessel.parts.with_title("TT18-A Launch Stability Enhancer"))):
         total_clamp_weight += clamp_weight
     return total_clamp_weight
+
+def get_crew_names(vessel):
+    for x in range(vessel.crew_count):
+        crew_name = vessel.crew.name[x]
+    return crew_name
+
+def get_crew_type(vessel):
+    for x in range(vessel.crew_count):
+        crew_type = vessel.crew.type[x]
+    return crew_type
