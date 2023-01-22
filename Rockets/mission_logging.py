@@ -78,40 +78,39 @@ def contract_log(conn, vessel, mission_params):
 def experiments_log(vessel, mission_params):
     log_file = mission_log_write(vessel, mission_params)    
     total_science = 0
+    parts_with_exp_title = []
+    experiment_list = []
 
     log_file.write("\n\n----- Experiments Deployed on Vessel -----")
     for i in range(len(vessel.parts.experiments)):
-        experiment = experiment_name(vessel, i)
-        y = vessel.parts.with_title(experiment)
-        t = len(y)
-        if vessel.parts.with_title(experiment)[i-t].experiment.has_data:
-            log_file.write(f"\n {str(experiment)}"
+        experiment_title = vessel.parts.experiments[i].part.title
+        parts_with_exp_title = vessel.parts.with_title(experiment_title)
+        for j in range(len(parts_with_exp_title)):
+            if experiment_list != parts_with_exp_title and len(experiment_list) <= i:
+                experiment_list += parts_with_exp_title
+
+    for e in range(len(experiment_list)):
+        if experiment_list[e].experiment.has_data:
+            log_file.write(f"\n {str(experiment_list[e].title)}"
                 f"\n    "
-                #f"{str(vessel.parts.with_title(experiment)[i-t].experiment.science_subject.title)}"
-                f"{str(vessel.parts.experiments[i-t].title)}"
+                f"{str(vessel.parts.experiments[e].title)}"
                 f"\n    Science: "
-                f"{str(round(vessel.parts.with_title(experiment)[i-t].experiment.data[0].science_value, 2))}")
-            total_science += round(vessel.parts.with_title(experiment)[i-t].experiment.data[0].science_value, 2)
+                f"{str(round(experiment_list[e].experiment.data[0].science_value, 2))}")
+            total_science += round(experiment_list[e].experiment.data[0].science_value, 2)
+
     if total_science != 0:
         log_file.write(f"\n\nTotal Science Collected: {str(total_science)}")
     else:
         log_file.write("\nNo Experiments Deployed on Vessel")
     log_file.close()
 
-def experiment_name(vessel, x):
-    if vessel.parts.experiments[x].part.title == "2HOT Thermometer":
-        experiment = vessel.parts.experiments[x].part.title
-    elif vessel.parts.experiments[x].part.title == "3PresMat Barometer":
-        experiment = vessel.parts.experiments[x].part.title
-    return experiment
-
 def flight_stats_log(vessel, mission_params, flight_stats):
     log_file = mission_log_write(vessel, mission_params)
     log_file.write(f"\n\n----- Flight Stats -----"
-                    f"\nApoapsis = {str(f'{max(flight_stats.max_ap):.02f} meters')}"
-                    f"\nMax Altitude = {str(f'{max(flight_stats.max_alt):.02f} meters')}"
-                    f"\nMax Velocity = {str(f'{max(flight_stats.max_vel):.02f} m/s')}"
-                    f"\nMax G-force = {str(f'{max(flight_stats.max_g):.02f} ')}" f"g's"
+                    f"\nApoapsis = {str(f'{max(flight_stats.max_ap, default = 0):.02f} meters')}"
+                    f"\nMax Altitude = {str(f'{max(flight_stats.max_alt, default = 0):.02f} meters')}"
+                    f"\nMax Velocity = {str(f'{max(flight_stats.max_vel, default = 0):.02f} m/s')}"
+                    f"\nMax G-force = {str(f'{max(flight_stats.max_g, default = 0):.02f} ')}" f"g's"
                     f"\nTouchdown Velocity = {str(f'{flight_stats.touchdown_speed:.02f} ' 'm/s')}")
     log_file.close()
                   
