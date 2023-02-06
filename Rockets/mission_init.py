@@ -1,5 +1,11 @@
 from dataclasses import dataclass, field
+# from pathlib import Path
 import yaml
+
+# path = Path.cwd() / "mission_config.yml"
+
+# with path.open() as config_file:
+    # config = yaml.safe_load(config_file)
 
 with open('Rockets/mission_config.yml', 'r') as config_file:
     config = yaml.safe_load(config_file)

@@ -140,6 +140,7 @@ def generate_log_file(conn, vessel, mission_params, vessel_params, vessel_stats,
     notes(vessel, mission_params)
     print("Log File Generated")
 
+# TODO: Turn into class
 def ut_format(x):
     seconds = x%60
     minutes = (x//60)%60
